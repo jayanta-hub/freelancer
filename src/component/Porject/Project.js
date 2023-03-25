@@ -13,7 +13,7 @@ const Project = () => {
   const [apiData, setApiData] = useState();
   const [childID, setChildID] = useState("");
   const [parentID, setParentID] = useState("");
-  const onClickHandler = (childId, parentId, item) => {
+  const onClickLeftHandler = (childId, parentId, item) => {
     setChildID(childId);
     setParentID(parentId);
     let modifydata = apiData;
@@ -46,7 +46,7 @@ const Project = () => {
     setSelectedItem(modifydata);
     setRefresh(refresh + 1);
   };
-  const addHanlder = () => {
+  const addHandler = () => {
     const array = apiData.filter((item) => item.id === parentID);
     const isPresent = selectedItem.filter((value) => value?.id === parentID);
     array.forEach((value, index) => {
@@ -90,7 +90,7 @@ const Project = () => {
     });
     setRefresh(refresh + 1);
   };
-  const RemoveHanlder = () => {
+  const RemoveHandler = () => {
     console.log("first");
     const array = selectedItem.filter((item) => item.id === parentID);
     const isPresent = apiData.filter((value) => value?.id === parentID);
@@ -167,7 +167,7 @@ const Project = () => {
                 <div
                   key={data.id}
                   onClick={() => {
-                    onClickHandler(data.id, item.id, item);
+                    onClickLeftHandler(data.id, item.id, item);
                   }}
                   style={{
                     background: data.isAddChecked ? "#ebb434" : "FFFFFF",
@@ -243,21 +243,6 @@ const Project = () => {
     e.preventDefault();
     let searchText = e.target.value;
     setSearchValue(searchText);
-    // apiData.filter((item) => {
-    //   let filterData = item?.right?.forEach((data) =>
-    //     if(data.name.toLowerCase().includes(searchText)){
-    //       return {
-    //           id: item?.id,
-    //           catagory: item?.catagory,
-    //           right: [data],
-    //       }
-    //     }
-    //   );
-    //   console.log(
-    //     "🚀 ~ file: Project.js:389 ~ apiData.map ~ filterData:",
-    //     filterData,
-    //   );
-    // });
   };
   useEffect(() => {
     setApiData(Data);
@@ -320,10 +305,10 @@ const Project = () => {
             paddingBottom: "100px",
           }}
         >
-          <Button variant="text" size="large" onClick={() => addHanlder()}>
+          <Button variant="text" size="large" onClick={addHandler}>
             <AiOutlineRight size={"30px"} />
           </Button>
-          <Button variant="text" size="large" onClick={() => RemoveHanlder()}>
+          <Button variant="text" size="large" onClick={RemoveHandler}>
             <AiOutlineLeft size={"30px"} />
           </Button>
         </Box>
