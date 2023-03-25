@@ -1,121 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 import Typography from "@mui/material/Typography";
 import { Button, Divider } from "@mui/material";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Box from "@mui/material/Box";
-
+import { Data } from "./Data";
 const Project = () => {
   const [refresh, setRefresh] = useState(0);
   const [searchValue, setSearchValue] = useState("");
   const [selectedItem, setSelectedItem] = useState([]);
-  const [apiData, setApiData] = useState([
-    {
-      id: 1,
-      catagory: "Dog",
-      right: [
-        {
-          id: 6,
-          parentId: 1,
-          name: "West Highland White Terrier",
-          isAddChecked: false,
-          isRemoveChecked: false,
-        },
-        {
-          id: 7,
-          parentId: 1,
-          name: "Rhodesian Ridgeback",
-          isAddChecked: false,
-          isRemoveChecked: false,
-        },
-        {
-          id: 8,
-          parentId: 1,
-          name: "Newfoundland",
-          isAddChecked: false,
-          isRemoveChecked: false,
-        },
-        {
-          id: 9,
-          parentId: 1,
-          name: "Basset Hound",
-          isAddChecked: false,
-          isRemoveChecked: false,
-        },
-        {
-          id: 10,
-          parentId: 1,
-          name: "Cavalier King Charles Spaniel",
-          isAddChecked: false,
-          isRemoveChecked: false,
-        },
-      ],
-    },
-    {
-      id: 2,
-      catagory: "Cat",
-      right: [
-        {
-          id: 11,
-          parentId: 2,
-          name: "Devon Rex Cats",
-          isAddChecked: false,
-          isRemoveChecked: false,
-        },
-        {
-          id: 12,
-          parentId: 2,
-          name: "Abyssinian Cats",
-          isAddChecked: false,
-          isRemoveChecked: false,
-        },
-        {
-          id: 13,
-          parentId: 2,
-          name: "Sphynx Cats",
-          isAddChecked: false,
-          isRemoveChecked: false,
-        },
-        {
-          id: 14,
-          parentId: 2,
-          name: "Scottish Fold Cats",
-          isAddChecked: false,
-          isRemoveChecked: false,
-        },
-      ],
-    },
-    {
-      id: 3,
-      catagory: "Deer",
-      right: [
-        {
-          id: 15,
-          parentId: 3,
-          name: "INDIAN CHEVROTAIN",
-          isAddChecked: false,
-          isRemoveChecked: false,
-        },
-        {
-          id: 16,
-          parentId: 3,
-          name: "HIMALAYAN MUSK DEER",
-          isAddChecked: false,
-          isRemoveChecked: false,
-        },
-        {
-          id: 17,
-          parentId: 3,
-          name: "INDIAN OR RED MUNTJAC",
-          isAddChecked: false,
-          isRemoveChecked: false,
-        },
-      ],
-    },
-  ]);
-  let [childID, setChildID] = useState("");
-  let [parentID, setParentID] = useState("");
+  const [apiData, setApiData] = useState();
+  const [childID, setChildID] = useState("");
+  const [parentID, setParentID] = useState("");
   const onClickHandler = (childId, parentId, item) => {
     setChildID(childId);
     setParentID(parentId);
@@ -362,8 +259,17 @@ const Project = () => {
     //   );
     // });
   };
+  useEffect(() => {
+    setApiData(Data);
+  }, []);
+
   return (
-    <Box>
+    <Box
+      sx={{
+        marginLeft: 5,
+        marginRight: 5,
+      }}
+    >
       <Box
         style={{
           flex: 1,
