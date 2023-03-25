@@ -137,58 +137,6 @@ const Project = () => {
   };
   const RenderItem = ({ item, type }) => {
     return (
-      <div key={item.id}>
-        <div
-          style={{
-            background: "#FFFFFF",
-          }}
-        >
-          {item?.right?.length !== 0 &&
-            item?.right.filter((data) =>
-              data.name.toLowerCase().includes(searchValue),
-            ).length !== 0 && (
-              <>
-                <Typography
-                  sx={{ fontSize: 18 }}
-                  color="text.secondary"
-                  gutterBottom
-                >
-                  {item.catagory}
-                </Typography>
-                <Divider />
-              </>
-            )}
-        </div>
-        {item?.right
-          .filter((data) => data.name.toLowerCase().includes(searchValue))
-          ?.map((data, ind) => {
-            return (
-              <>
-                <div
-                  key={data.id}
-                  onClick={() => {
-                    onClickLeftHandler(data.id, item.id, item);
-                  }}
-                  style={{
-                    background: data.isAddChecked ? "#ebb434" : "FFFFFF",
-                    marginLeft: "5px",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <ListItem>
-                    <ListItemText primary={data.name} />
-                  </ListItem>
-                  <Divider />
-                </div>
-              </>
-            );
-          })}
-      </div>
-    );
-  };
-  const RenderRightItem = ({ item, type }) => {
-    return (
       <Box key={item.id}>
         <Box
           style={{
@@ -219,10 +167,18 @@ const Project = () => {
                 <Box
                   key={data.id}
                   onClick={() => {
-                    onClickRightHandler(data.id, item.id);
+                    type === "Catagory"
+                      ? onClickLeftHandler(data.id, item.id, item)
+                      : onClickRightHandler(data.id, item.id);
                   }}
                   style={{
-                    background: data.isRemoveChecked ? "#ebb434" : "FFFFFF",
+                    background: (
+                      type === "Catagory"
+                        ? data.isAddChecked
+                        : data.isRemoveChecked
+                    )
+                      ? "#ebb434"
+                      : "FFFFFF",
                     marginLeft: "5px",
                     justifyContent: "center",
                     alignItems: "center",
@@ -319,7 +275,7 @@ const Project = () => {
           {selectedItem?.map((item) => {
             return (
               <>
-                <RenderRightItem item={item} type={"seclected"} />
+                <RenderItem item={item} type={"seclected"} />
               </>
             );
           })}
