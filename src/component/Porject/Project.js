@@ -10,13 +10,6 @@ const Project = () => {
   const [refresh, setRefresh] = useState(0);
   const [searchValue, setSearchValue] = useState("");
   const [selectedItem, setSelectedItem] = useState([]);
-  const [indivisualSelectedItem, setIndivisualSelectedItem] = useState([]);
-  console.log(
-    "🚀 ~ file: Project.js:13 ~ Project ~ indivisualSelectedItem:",
-    selectedItem.filter(
-      (data) => data?.catagory === indivisualSelectedItem.catagory,
-    ),
-  );
   const [apiData, setApiData] = useState([
     {
       id: 1,
@@ -123,11 +116,9 @@ const Project = () => {
   ]);
   let [childID, setChildID] = useState("");
   let [parentID, setParentID] = useState("");
-  console.log("🚀 ~ file: Project.js:123 ~ Project ~ parentID:", parentID);
   const onClickHandler = (childId, parentId, item) => {
     setChildID(childId);
     setParentID(parentId);
-    setIndivisualSelectedItem(item);
     let modifydata = apiData;
     modifydata?.map((data, index) => {
       data?.right?.map((item, ind) => {
@@ -160,37 +151,16 @@ const Project = () => {
   };
   const addHanlder = () => {
     const array = apiData.filter((item) => item.id === parentID);
-    array.forEach((item, index) => {
-      item?.right?.forEach((data, ini) => {
+    const isPresent = selectedItem.filter((value) => value?.id === parentID);
+    array.forEach((value, index) => {
+      value?.right?.forEach((data, ini) => {
         if (data.isAddChecked) {
-          if (
-            selectedItem?.length > 0 &&
-            item?.catagory === indivisualSelectedItem.catagory
-          ) {
+          if (isPresent?.length > 0) {
             selectedItem.forEach((item, ind) => {
-              console.log("first", item);
               if (item?.id === data?.parentId) {
-                console.log("2nd");
                 selectedItem[ind].right.push(data);
-                apiData.forEach((item, itemindex) => {
-                  item?.right.forEach((api, apiindex) => {
-                    if (
-                      api.id === childID &&
-                      apiData[itemindex]?.right.length > 0
-                    ) {
-                      apiData[itemindex]?.right?.splice(apiindex, 1);
-                    }
-                  });
-                });
-              } else {
-                console.log("3rd");
-                selectedItem.push({
-                  id: array[ind]?.id,
-                  catagory: array[ind]?.catagory,
-                  right: [data],
-                });
-                apiData.map((item, itemindex) => {
-                  item?.right.map((api, apiindex) => {
+                apiData.forEach((apiDataitem, itemindex) => {
+                  apiDataitem?.right.forEach((api, apiindex) => {
                     if (
                       api.id === childID &&
                       apiData[itemindex]?.right.length > 0
@@ -202,10 +172,9 @@ const Project = () => {
               }
             });
           } else {
-            console.log("4th");
             selectedItem.push({
-              id: item?.id,
-              catagory: item?.catagory,
+              id: value?.id,
+              catagory: value?.catagory,
               right: [data],
             });
             apiData.map((item, itemindex) => {
@@ -225,33 +194,18 @@ const Project = () => {
     setRefresh(refresh + 1);
   };
   const RemoveHanlder = () => {
+    console.log("first");
     const array = selectedItem.filter((item) => item.id === parentID);
-    let finalData = [];
-    array.forEach((item, index) => {
-      item?.right?.filter((data, ini) => {
+    const isPresent = apiData.filter((value) => value?.id === parentID);
+    array.forEach((value, index) => {
+      value?.right?.forEach((data, ini) => {
         if (data.isRemoveChecked) {
-          if (apiData?.length > 0) {
-            apiData.map((item, ind) => {
+          if (isPresent?.length > 0) {
+            apiData.forEach((item, ind) => {
               if (item?.id === data?.parentId) {
                 apiData[ind].right.push(data);
-                selectedItem.map((item, itemindex) => {
-                  item?.right.map((api, apiindex) => {
-                    if (
-                      api.id === childID &&
-                      selectedItem[itemindex]?.right.length > 0
-                    ) {
-                      selectedItem[itemindex]?.right?.splice(apiindex, 1);
-                    }
-                  });
-                });
-              } else {
-                apiData.push({
-                  id: array[ind].id,
-                  catagory: array[ind].catagory,
-                  right: [data],
-                });
-                selectedItem.map((item, itemindex) => {
-                  item?.right.map((api, apiindex) => {
+                selectedItem.forEach((apiDataitem, itemindex) => {
+                  apiDataitem?.right.forEach((api, apiindex) => {
                     if (
                       api.id === childID &&
                       selectedItem[itemindex]?.right.length > 0
@@ -264,8 +218,8 @@ const Project = () => {
             });
           } else {
             apiData.push({
-              id: array[ini].id,
-              catagory: array[ini].catagory,
+              id: value?.id,
+              catagory: value?.catagory,
               right: [data],
             });
             selectedItem.map((item, itemindex) => {
